@@ -1,0 +1,15 @@
+# Microsoft Graph API
+msal==1.31.0
+requests==2.32.3
+
+# Browser automation for Filevine
+playwright==1.49.1
+
+# Environment configuration
+python-dotenv==1.0.1
+
+# Scheduling
+schedule==1.2.2
+
+# HTML email building
+jinja2==3.1.4
