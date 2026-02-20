@@ -1,7 +1,7 @@
 """Microsoft Graph API email client for reading and sending emails."""
 
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import msal
 import requests
@@ -35,9 +35,7 @@ class EmailClient:
 
         self._token = result["access_token"]
         expires_in = result.get("expires_in", 3600)
-        self._token_expiry = datetime.now(timezone.utc).replace(
-            second=datetime.now(timezone.utc).second + expires_in
-        )
+        self._token_expiry = datetime.now(timezone.utc) + timedelta(seconds=expires_in)
         logger.info("Acquired new Graph API access token")
         return self._token
 

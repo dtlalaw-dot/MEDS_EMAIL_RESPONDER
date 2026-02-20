@@ -35,12 +35,11 @@ and wanted to provide you with an update on your case.</p>
   </tr>
 </table>
 
-<p>A member of our team will review your message and respond as soon as possible.
-If your matter is urgent, please call us directly at <strong>{{ firm_phone }}</strong>.</p>
+<p>A member of our team will review your message and respond as soon as possible.</p>
 
 <p>Best regards,<br>
 <strong>{{ firm_name }}</strong><br>
-{{ firm_phone }}<br>
+{% if firm_phone %}{{ firm_phone }}<br>{% endif %}
 {{ firm_email }}</p>
 
 <hr style="border: none; border-top: 1px solid #eee; margin-top: 30px;">
@@ -61,11 +60,9 @@ NO_CASE_TEMPLATE = Template("""\
 <p>Thank you for contacting <strong>{{ firm_name }}</strong>. We have received your email
 and a member of our team will review it and respond to you as soon as possible.</p>
 
-<p>If your matter is urgent, please call us directly at <strong>{{ firm_phone }}</strong>.</p>
-
 <p>Best regards,<br>
 <strong>{{ firm_name }}</strong><br>
-{{ firm_phone }}<br>
+{% if firm_phone %}{{ firm_phone }}<br>{% endif %}
 {{ firm_email }}</p>
 
 <hr style="border: none; border-top: 1px solid #eee; margin-top: 30px;">
