@@ -4,7 +4,11 @@ import logging
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright, Browser, Page, TimeoutError as PwTimeout
+try:
+    from playwright.sync_api import sync_playwright, Browser, Page, TimeoutError as PwTimeout
+    HAS_PLAYWRIGHT = True
+except ImportError:
+    HAS_PLAYWRIGHT = False
 
 from config import Config
 
@@ -259,6 +263,10 @@ class FilevineScraper:
         """
         logger.info("Looking up case in Filevine for: %s", sender_email)
         case_info = CaseInfo()
+
+        if not HAS_PLAYWRIGHT:
+            logger.warning("Playwright not installed — skipping Filevine lookup")
+            return case_info
 
         try:
             with sync_playwright() as pw:
