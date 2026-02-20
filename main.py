@@ -71,10 +71,23 @@ def process_emails(email_client: EmailClient, scraper: FilevineScraper) -> int:
         # Skip automated/no-reply senders to avoid reply loops
         skip_patterns = [
             "noreply", "no-reply", "donotreply", "do-not-reply",
-            "mailer-daemon", "postmaster",
+            "mailer-daemon", "postmaster", "newsletter", "newsletters",
+            "notifications", "notification", "alert", "alerts",
+            "updates", "update", "news@", "info@", "support@",
+            "billing@", "invoice", "receipt", "marketing",
+            "promo", "promotion", "unsubscribe", "bounce",
+            "feedback@", "survey", "digest", "automated",
+            "system@", "admin@", "wires@", "wire@",
         ]
         if any(p in sender_email.lower() for p in skip_patterns):
             logger.info("Skipping automated sender: %s", sender_email)
+            email_client.mark_as_read(msg_id)
+            continue
+
+        # Skip emails from the firm's own domain to avoid internal reply loops
+        monitored_domain = Config.MONITORED_EMAIL.split("@")[-1].lower()
+        if sender_email.lower().endswith(f"@{monitored_domain}"):
+            logger.info("Skipping internal sender: %s", sender_email)
             email_client.mark_as_read(msg_id)
             continue
 
